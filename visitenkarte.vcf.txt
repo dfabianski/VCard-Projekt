@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Fabianski;Dominik;;;
+FN:Dominik Fabianski
+ORG:Hergarten Gruppe
+TITLE:Projektassistenz IT & Digital
+TEL;TYPE=CELL:+49123456789
+EMAIL;TYPE=PREF,INTERNET:deine-email@beispiel.de
+URL:https://deine-website.de
+END:VCARD
