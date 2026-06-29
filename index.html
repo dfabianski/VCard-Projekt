@@ -4,68 +4,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dominik Fabianski | Digitale Visitenkarte</title>
+    <!-- Tailwind CSS for high fidelity styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for comprehensive icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #121212; /* Moderner Darkmode-Hintergrund */
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .card {
-            background: #1e1e1e;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-            max-width: 350px;
-            width: 90%;
-        }
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: #333; /* Hier kommt später dein Bild hin */
-            margin: 0 auto 20px;
-            border: 3px solid #00adb5; /* Akzentfarbe */
-        }
-        h1 {
-            margin: 10px 0 5px;
-            font-size: 24px;
-        }
-        p {
-            color: #bbbbbb;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-        .btn {
-            display: block;
-            background: #00adb5;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn:hover {
-            background: #007c82;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; /* Edler, dunkler Gesamthintergrund */
         }
     </style>
 </head>
-<body>
+<body class="text-slate-200 antialiased min-h-screen flex items-center justify-center p-4">
 
-<div class="card">
-    <div class="avatar">
+    <!-- Smartphone Frame (Zentriert auf dem Bildschirm) -->
+    <div class="w-full max-w-[400px] aspect-[9/19] rounded-[48px] bg-slate-950 p-3 border-4 border-slate-900 shadow-2xl relative overflow-hidden flex flex-col">
+        
+        <!-- Dynamic Speaker & Camera Notch -->
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-b-2xl z-20 flex items-center justify-center gap-1.5">
+            <div class="w-12 h-1 bg-slate-800 rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-slate-900 rounded-full border border-slate-800"></div>
         </div>
-    <h1>Dominik Fabianski</h1>
-    <p>Kaufmann für Büromanagement<br>Hergarten Gruppe</p>
-    
-    <a href="visitenkarte.vcf" class="btn" download>Kontakt speichern</a>
-</div>
 
+        <!-- Inner Screen Canvas (Luxe Dark Theme) -->
+        <div id="preview-screen" class="w-full h-full rounded-[40px] overflow-y-auto overflow-x-hidden relative flex flex-col bg-slate-900 transition-all duration-300">
+            
+            <!-- Header Background Decoration -->
+            <div id="card-hero-bg" class="w-full h-32 bg-slate-800 shrink-0 relative transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-transparent to-transparent opacity-60"></div>
+                <div class="absolute top-8 right-12 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
+            </div>
+
+            <!-- Card Body (Scrolling Content) -->
+            <div class="px-6 pb-8 -mt-16 grow flex flex-col relative z-10">
+                
+                <!-- Profile Avatar Wrapper -->
+                <div class="text-center">
+                    <div class="inline-block relative">
+                        <div id="preview-avatar-container" class="w-24 h-24 rounded-3xl bg-slate-800 border-4 border-slate-900 overflow-hidden shadow-xl flex items-center justify-center mx-auto">
+                            <!-- Standard-Icon, solange du kein Bild im Repo hast -->
+                            <i id="preview-avatar-fallback" class="fa-solid fa-user-tie text-3xl text-slate-400"></i>
+                            <!-- Falls du ein Bild hochlädst, entferne die Auskommentierung unten und lösche das Icon darüber -->
+                            <!-- <img src="pablo.jpg" class="w-full h-full object-cover" alt="Profile"> -->
+                        </div>
+                        <!-- Verified Badge -->
+                        <div class="absolute -bottom-1 -right-1 bg-indigo-500 text-white w-6 h-6 rounded-full border-2 border-slate-900 flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-check text-[10px]"></i>
+                        </div>
+                    </div>
+
+                    <!-- Personal Details -->
+                    <div class="mt-4">
+                        <h2 class="text-xl font-bold text-white tracking-tight">Dominik Fabianski</h2>
+                        <p class="text-xs font-semibold text-indigo-400 mt-1">Projektassistenz IT & Digital</p>
+                        <p class="text-[11px] text-slate-400 font-medium">Hergarten Gruppe</p>
+                    </div>
+
+                    <!-- Bio / About section -->
+                    <div class="mt-4 py-3 border-y border-slate-800/80">
+                        <p class="text-xs text-slate-400 leading-relaxed italic">
+                            "Ich gestalte preisgekrönte Benutzeroberflächen und moderne Markenauftritte für digitale Produkte der Zukunft."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Quick Actions (Buttons) -->
+                <div class="grid grid-cols-2 gap-2 mt-5">
+                    <a href="mailto:d.fabianski@stahlspedition.de" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl py-3 px-2 text-center text-xs font-semibold flex flex-col items-center justify-center gap-1 shadow-md shadow-indigo-900/10 transition hover:scale-[1.03]">
+                        <i class="fa-solid fa-envelope text-sm"></i>
+                        E-Mail senden
+                    </a>
+                    <a href="tel:01624186643" class="bg-slate-800 hover:bg-slate-750 text-white rounded-2xl py-3 px-2 text-center text-xs font-semibold flex flex-col items-center justify-center gap-1 shadow-md transition hover:scale-[1.03]">
+                        <i class="fa-solid fa-phone text-sm text-indigo-400"></i>
+                        Anrufen
+                    </a>
+                </div>
+
+                <!-- Social Links & Action Cards Stack -->
+                <div class="mt-6 flex flex-col gap-2.5">
+                    
+                    <!-- Website Link Card -->
+                    <a href="https://stahlspedition.de" target="_blank" class="bg-slate-850/80 hover:bg-slate-800 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between text-white transition hover:-translate-y-0.5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-xs shrink-0">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs font-bold">Besuche unsere Website</p>
+                                <p class="text-[10px] text-slate-500">stahlspedition.de</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
+                    </a>
+
+                    <!-- LinkedIn Row -->
+                    <a href="https://www.linkedin.com/in/dominik-fabianski-b232183b5/" target="_blank" class="bg-slate-850/80 hover:bg-slate-800 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between text-white transition hover:-translate-y-0.5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-xs shrink-0">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs font-bold">Verbinden auf LinkedIn</p>
+                                <p class="text-[10px] text-slate-500">Professional Network</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
+                    </a>
+                </div>
+
+                <!-- Bottom Branding & vCard Import CTA -->
+                <div class="mt-8 pt-6 border-t border-slate-800/80 text-center space-y-3">
+                    <p class="text-[11px] text-slate-500">
+                        <i class="fa-solid fa-location-dot text-indigo-400 mr-1"></i> Neuss, Deutschland
+                    </p>
+                    <button onclick="downloadVCard()" class="w-full bg-slate-800 hover:bg-slate-750 text-white text-xs font-bold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 border border-slate-700/80 transition shadow-lg">
+                        <i class="fa-solid fa-user-plus text-indigo-400"></i>
+                        In Kontakte speichern
+                    </button>
+                    <p class="text-[9px] text-slate-600 tracking-wider uppercase">Erstellt mit VCard Studio</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        function downloadVCard() {
+            let vcfData = [
+                "BEGIN:VCARD",
+                "VERSION:3.0",
+                "N:Fabianski;Dominik;;;",
+                "FN:Dominik Fabianski",
+                "ORG:Hergarten Gruppe",
+                "TITLE:Projektassistenz IT & Digital",
+                "TEL;TYPE=CELL:01624186643",
+                "EMAIL;TYPE=PREF,INTERNET:d.fabianski@stahlspedition.de",
+                "URL:stahlspedition.de",
+                "NOTE:Ich gestalte preisgekrönte Benutzeroberflächen und moderne Markenauftritte für digitale Produkte der Zukunft.",
+                "ADR;TYPE=WORK:;;;Neuss, Deutschland;;;",
+                "X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/dominik-fabianski-b232183b5/",
+                "END:VCARD"
+            ].join("\n");
+
+            const blob = new Blob([vcfData], { type: "text/vcard;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Dominik_Fabianski_visitenkarte.vcf";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
 </body>
 </html>
