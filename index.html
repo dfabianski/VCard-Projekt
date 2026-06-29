@@ -46,9 +46,7 @@
                 <div class="text-center">
                     <div class="inline-block relative">
                         <div id="preview-avatar-container" class="w-24 h-24 rounded-3xl bg-slate-800 border-4 border-slate-900 overflow-hidden shadow-xl flex items-center justify-center mx-auto">
-                            <!-- Lädt dein echtes Profilbild aus dem GitHub Archiv -->
                             <img src="profil.jpeg" class="w-full h-full object-cover" alt="Dominik Fabianski" onerror="this.style.display='none'; document.getElementById('preview-avatar-fallback').style.display='block';">
-                            <!-- Fallback Icon falls das Bild mal nicht lädt oder fehlt -->
                             <i id="preview-avatar-fallback" class="fa-solid fa-user-tie text-3xl text-slate-400 hidden"></i>
                         </div>
                         <!-- Verified Badge -->
@@ -125,7 +123,6 @@
                         <i class="fa-solid fa-user-plus text-indigo-400"></i>
                         In Kontakte speichern
                     </button>
-                    <!-- Dein eigenes Branding im Footer -->
                     <p class="text-[9px] text-slate-500 tracking-wider uppercase font-medium">© Dominik Fabianski // IT & Digital</p>
                 </div>
 
@@ -172,15 +169,9 @@
             vcfLines.push("END:VCARD");
             let vcfData = vcfLines.join("\n");
 
-            const vcfBlob = new Blob([vcfData], { type: "text/vcard;charset=utf-8" });
-            const url = URL.createObjectURL(vcfBlob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "Dominik_Fabianski_visitenkarte.vcf";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // NEUER TRICK: Direktes Öffnen über den Adressdaten-Stream triggern
+            const encodedUri = "data:text/vcard;charset=utf-8," + encodeURIComponent(vcfData);
+            window.location.href = encodedUri;
         }
     </script>
 </body>
