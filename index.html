@@ -46,8 +46,8 @@
                 <div class="text-center">
                     <div class="inline-block relative">
                         <div id="preview-avatar-container" class="w-24 h-24 rounded-3xl bg-slate-800 border-4 border-slate-900 overflow-hidden shadow-xl flex items-center justify-center mx-auto">
-                            <!-- Lädt dein echtes Profilbild aus dem GitHub Archiv -->
-                            <img src="profil.jpg" class="w-full h-full object-cover" alt="Dominik Fabianski" onerror="this.style.display='none'; document.getElementById('preview-avatar-fallback').style.display='block';">
+                            <!-- Sucht jetzt exakt nach profil.jpeg aus deinem Repository -->
+                            <img src="profil.jpeg" class="w-full h-full object-cover" alt="Dominik Fabianski" onerror="this.style.display='none'; document.getElementById('preview-avatar-fallback').style.display='block';">
                             <!-- Fallback Icon falls das Bild mal nicht lädt oder fehlt -->
                             <i id="preview-avatar-fallback" class="fa-solid fa-user-tie text-3xl text-slate-400 hidden"></i>
                         </div>
@@ -137,9 +137,9 @@
         async function downloadVCard() {
             let base64Photo = "";
             
-            // Versucht dein hochgeladenes profil.jpg zu laden und in vCard-Code umzuwandeln
+            // Greift jetzt korrekt auf profil.jpeg zu
             try {
-                const response = await fetch('profil.jpg');
+                const response = await fetch('profil.jpeg');
                 const blob = await response.blob();
                 base64Photo = await new Promise((resolve) => {
                     const reader = new FileReader();
@@ -165,7 +165,7 @@
                 "X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/dominik-fabianski-b232183b5/"
             ];
 
-            // Wenn das Bild erfolgreich geladen wurde, füge es der vCard hinzu
+            // Fügt das JPEG der vCard hinzu, wenn es geladen wurde
             if (base64Photo) {
                 vcfLines.push(`PHOTO;TYPE=JPEG;ENCODING=b:${base64Photo}`);
             }
