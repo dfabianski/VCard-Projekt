@@ -46,7 +46,7 @@
                 <div class="text-center">
                     <div class="inline-block relative">
                         <div id="preview-avatar-container" class="w-24 h-24 rounded-3xl bg-slate-800 border-4 border-slate-900 overflow-hidden shadow-xl flex items-center justify-center mx-auto">
-                            <!-- Sucht jetzt exakt nach profil.jpeg aus deinem Repository -->
+                            <!-- Lädt dein echtes Profilbild aus dem GitHub Archiv -->
                             <img src="profil.jpeg" class="w-full h-full object-cover" alt="Dominik Fabianski" onerror="this.style.display='none'; document.getElementById('preview-avatar-fallback').style.display='block';">
                             <!-- Fallback Icon falls das Bild mal nicht lädt oder fehlt -->
                             <i id="preview-avatar-fallback" class="fa-solid fa-user-tie text-3xl text-slate-400 hidden"></i>
@@ -125,7 +125,8 @@
                         <i class="fa-solid fa-user-plus text-indigo-400"></i>
                         In Kontakte speichern
                     </button>
-                    <p class="text-[9px] text-slate-600 tracking-wider uppercase">Erstellt mit VCard Studio</p>
+                    <!-- Dein eigenes Branding im Footer -->
+                    <p class="text-[9px] text-slate-500 tracking-wider uppercase font-medium">© Dominik Fabianski // IT & Digital</p>
                 </div>
 
             </div>
@@ -137,7 +138,6 @@
         async function downloadVCard() {
             let base64Photo = "";
             
-            // Greift jetzt korrekt auf profil.jpeg zu
             try {
                 const response = await fetch('profil.jpeg');
                 const blob = await response.blob();
@@ -165,7 +165,6 @@
                 "X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/dominik-fabianski-b232183b5/"
             ];
 
-            // Fügt das JPEG der vCard hinzu, wenn es geladen wurde
             if (base64Photo) {
                 vcfLines.push(`PHOTO;TYPE=JPEG;ENCODING=b:${base64Photo}`);
             }
