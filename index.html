@@ -46,10 +46,10 @@
                 <div class="text-center">
                     <div class="inline-block relative">
                         <div id="preview-avatar-container" class="w-24 h-24 rounded-3xl bg-slate-800 border-4 border-slate-900 overflow-hidden shadow-xl flex items-center justify-center mx-auto">
-                            <!-- Standard-Icon, solange du kein Bild im Repo hast -->
-                            <i id="preview-avatar-fallback" class="fa-solid fa-user-tie text-3xl text-slate-400"></i>
-                            <!-- Falls du ein Bild hochlädst, entferne die Auskommentierung unten und lösche das Icon darüber -->
-                            <!-- <img src="pablo.jpg" class="w-full h-full object-cover" alt="Profile"> -->
+                            <!-- Lädt dein echtes Profilbild aus dem GitHub Archiv -->
+                            <img src="profil.jpg" class="w-full h-full object-cover" alt="Dominik Fabianski" onerror="this.style.display='none'; document.getElementById('preview-avatar-fallback').style.display='block';">
+                            <!-- Fallback Icon falls das Bild mal nicht lädt oder fehlt -->
+                            <i id="preview-avatar-fallback" class="fa-solid fa-user-tie text-3xl text-slate-400 hidden"></i>
                         </div>
                         <!-- Verified Badge -->
                         <div class="absolute -bottom-1 -right-1 bg-indigo-500 text-white w-6 h-6 rounded-full border-2 border-slate-900 flex items-center justify-center shadow-lg">
@@ -134,8 +134,23 @@
 
     <!-- Application Logic -->
     <script>
-        function downloadVCard() {
-            let vcfData = [
+        async function downloadVCard() {
+            let base64Photo = "";
+            
+            // Versucht dein hochgeladenes profil.jpg zu laden und in vCard-Code umzuwandeln
+            try {
+                const response = await fetch('profil.jpg');
+                const blob = await response.blob();
+                base64Photo = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                    reader.readAsDataURL(blob);
+                });
+            } catch (e) {
+                console.log("Profilbild konnte für die vCard nicht konvertiert werden.", e);
+            }
+
+            let vcfLines = [
                 "BEGIN:VCARD",
                 "VERSION:3.0",
                 "N:Fabianski;Dominik;;;",
@@ -147,12 +162,19 @@
                 "URL:stahlspedition.de",
                 "NOTE:Ich gestalte preisgekrönte Benutzeroberflächen und moderne Markenauftritte für digitale Produkte der Zukunft.",
                 "ADR;TYPE=WORK:;;;Neuss, Deutschland;;;",
-                "X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/dominik-fabianski-b232183b5/",
-                "END:VCARD"
-            ].join("\n");
+                "X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/dominik-fabianski-b232183b5/"
+            ];
 
-            const blob = new Blob([vcfData], { type: "text/vcard;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
+            // Wenn das Bild erfolgreich geladen wurde, füge es der vCard hinzu
+            if (base64Photo) {
+                vcfLines.push(`PHOTO;TYPE=JPEG;ENCODING=b:${base64Photo}`);
+            }
+
+            vcfLines.push("END:VCARD");
+            let vcfData = vcfLines.join("\n");
+
+            const vcfBlob = new Blob([vcfData], { type: "text/vcard;charset=utf-8" });
+            const url = URL.createObjectURL(vcfBlob);
             const a = document.createElement("a");
             a.href = url;
             a.download = "Dominik_Fabianski_visitenkarte.vcf";
